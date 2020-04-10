@@ -1,5 +1,8 @@
 # Create a class to hold a city location. Call the class "City". It should have
 # fields for name, lat and lon (representing latitude and longitude).
+import csv
+import math 
+
 class City():
   def __init__(self, name, lat, lon):
     self.name = name
@@ -8,6 +11,40 @@ class City():
 
   def __str__(self):
     return f" name: {self.name}, lat:{self.lat}, lon:{self.lon}"
+
+  #   # comparing group 2 1st element minus group 1 1st element
+  #   # comparing group 2 2nd element minus group 1 2nd element
+  #   # 100 and 90
+
+  def is_in(self, group_1, group_2):
+    lat_check = False
+    lon_check = False
+
+  # lat 
+  # 100 - 90 as sample numbers
+    #must be less than group 2, more than group 1
+    if(group_2[0] - group_1[0] > 0):
+      if(self.lat < group_2[0] and self.lat > group_1[0]):
+        lat_check = True
+    else:
+    # 90 - 100 
+    #must be more than group 2 (smaller), and less than group 1
+      if(self.lat > group_2[0] and self.lat < group_1[0]):
+        lat_check = True
+
+    # lon
+    if(group_2[1] - group_1[1] > 0):
+      if(self.lon < group_2[1] and self.lon > group_1[1]):
+        lon_check = True
+    else:
+      if(self.lon < group_1[1] and self.lon > group_2[1]):
+        lon_check = True
+
+    if(lat_check and lon_check == True):
+        return True
+    else:
+        return False
+
 
 # We have a collection of US cities with population over 750,000 stored in the
 # file "cities.csv". (CSV stands for "comma-separated values".)
@@ -22,7 +59,7 @@ class City():
 # Note that the first line of the CSV is header that describes the fields--this
 # should not be loaded into a City object.
 cities = []
-import csv
+
 
 def cityreader(cities=[]):
   # TODO Implement the functionality to read from the 'cities.csv' file
@@ -76,6 +113,20 @@ for c in cities:
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
   # within will hold the cities that fall within the specified region
   within = []
+
+  # loop, and check if :
+  # group 1 and 2
+  # (lat1, lon1) or (lat2, lon2) 
+  # then if both are within(Function), then append to within list
+
+  #something like:
+
+  group_1 = (lat1, lon1)
+  group_2 = (lat2, lon2)
+
+  for x in cities:
+    if x.is_in(group_1, group_2):
+      within.append(x)   
 
   # TODO Ensure that the lat and lon valuse are all floats
   # Go through each city and check to see if it falls within 
